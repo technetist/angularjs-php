@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PHP and Angular JS</title>
+	<script src="angular.js"></script>
+	<script src="app.js"></script>
+</head>
+<body  ng-app="funwithcountries">
+
+	<h1>Fun with Countries</h1>
+
+	<div ng-controller="CountryController as countryCtrl">
+		{{ countryCtrl.countries.name }}
+	</div>
+</body>
+</html>
