@@ -3,6 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>PHP and Angular JS</title>
+	<style>
+		ul {
+			border: 1px solid orange;
+		}
+	</style>
 	<script src="angular.js"></script>
 	<script src="app.js"></script>
 </head>
@@ -11,7 +16,18 @@
 	<h1>Fun with Countries</h1>
 
 	<div ng-controller="CountryController as countryCtrl">
-		{{ countryCtrl.countries.name }}
+		<ul>
+			<li ng-repeat="c in countryCtrl.countries">
+				<img ng-src="images/{{ c.code }}.png">
+				{{ c.name }}
+				<ul ng-show="c.states.length > 0">
+					<li ng-repeat="s in c.states">
+						{{ s.name }}
+					</li>
+				</ul>
+			</li>
+		</ul>
+		
 	</div>
 </body>
 </html>
