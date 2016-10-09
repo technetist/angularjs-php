@@ -16,5 +16,19 @@
 		countryService.getCountries().success(function(data){
 			that.countries = data;
 		});
+		 
 	});
+
+	app.controller('StateController', function(){
+		this.addStateTo = function(country){
+			if(!country.states) {
+				country.states = [];
+			}
+			country.states.push({
+				name: this.newState
+			});
+			this.newState = "";
+		};
+	});
+
 })();
