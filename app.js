@@ -1,13 +1,16 @@
 (function() {
-	var app = angular.module('funwithcountries', []);
+	var app = angular.module('funwithcountries', ['ngRoute']);
 
 	app.factory('countryService', function($http){
 		var baseUrl = 'services/'
 		return {
 			getCountries: function() {
 				return $http.get(baseUrl + 'getCountries.php');
+			},
+			getStates: function(countryCode){
+				return $http.get(baseUrl + 'getStates.php?countryCode=' + encodeURIComponent(countryCode));
 			}
-		}
+		};
 	})
 
 	app.controller('CountryController', function(countryService) {
@@ -19,16 +22,30 @@
 		 
 	});
 
-	app.controller('StateController', function(){
-		this.addStateTo = function(country){
-			if(!country.states) {
-				country.states = [];
-			}
-			country.states.push({
-				name: this.newState
-			});
-			this.newState = "";
-		};
+	app.config(function($routeProvider) {
+		$routeProvider.when('/states/:countryCode', {
+			templateUrl: 'state-view.html',
+			controller: function($routeParams, countryService) {
+				this.params = $routeParams;
+
+				var that = this;
+
+				countryService.getStates(this.params.countryCode || "").success(function(data){
+					that.states = data;
+				});
+
+				this.addStateTo = function(){
+					if(!this.states) {
+						this.states = [];
+					}
+					this.states.push({
+						name: this.newState
+					});
+					this.newState = "";
+				};
+			},
+			controllerAs: 'stateCtrl'
+		});
 	});
 
 })();
