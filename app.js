@@ -9,6 +9,9 @@
 			},
 			getStates: function(countryCode){
 				return $http.get(baseUrl + 'getStates.php?countryCode=' + encodeURIComponent(countryCode));
+			},
+			addState: function(name, countryCode){
+				return $http.get(baseUrl + 'addState.php?name=' + encodeURIComponent(name) + '&countryCode=' + encodeURIComponent(countryCode));
 			}
 		};
 	})
@@ -32,15 +35,14 @@
 
 				countryService.getStates(this.params.countryCode || "").success(function(data){
 					that.states = data;
-				});
+				})
 
 				this.addStateTo = function(){
 					if(!this.states) {
 						this.states = [];
 					}
-					this.states.push({
-						name: this.newState
-					});
+					this.states.push({name: this.newState});
+					countryService.addState(this.newState, this.params.countryCode);
 					this.newState = "";
 				};
 			},
